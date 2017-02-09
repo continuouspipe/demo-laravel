@@ -102,7 +102,7 @@ tasks:
         deploy:
             cluster: ${CLUSTER}
             environment:
-                name: '"techup-" ~ code_reference.branch'
+                name: '"laravel-demo-" ~ code_reference.branch'
 
             services:
                 web:
