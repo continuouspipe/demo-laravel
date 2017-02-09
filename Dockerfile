@@ -1,4 +1,4 @@
-FROM quay.io/continuouspipe/php7-nginx:v1.0
+FROM quay.io/continuouspipe/php7-nginx:latest
 
 COPY ./tools/docker/usr/ /usr/
 
