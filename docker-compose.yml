@@ -1,0 +1,41 @@
+version: "2"
+services:
+    web:
+        build:
+            context: .
+            args:
+                - APP_ENV
+        links:
+            - database
+            - redis
+        expose:
+            - 80
+            - 443
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - .:/app
+        environment:
+          VIRTUAL_HOST: "127.0.0.1:80"
+          REDIS_PORT: 6379
+          APP_USER_LOCAL: "true"
+
+    database:
+        image: mariadb:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: laravel
+            MYSQL_DATABASE: laravel
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: laravel
+        expose:
+            - 3306
+        ports:
+            - "3360:3360"
+
+    redis:
+        image: redis:3.0
+        expose:
+            - 6379
+        ports:
+            - "6379:6379"

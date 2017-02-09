@@ -1,0 +1,44 @@
+#!/bin/bash
+
+export PHP_TIMEZONE=${PHP_TIMEZONE:-Europe/London}
+export PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-256M}
+export APP_USER=${APP_USER:-www-data}
+export APP_GROUP=${APP_GROUP:-www-data}
+export START_NGINX=${START_NGINX:-true}
+export START_PHP_FPM=${START_PHP_FPM:-true}
+
+export WORK_DIRECTORY=${WORK_DIRECTORY:-/app}
+export WEB_DIRECTORY=${WEB_DIRECTORY:-${WORK_DIRECTORY}/public}
+export STORAGE_DIR=${STORAGE_DIR:-${WORK_DIRECTORY}/storage}
+export UPLOADS_DIR=${UPLOADS_DIR:-${STORAGE_DIR}/app/public/uploads}
+export FRAMEWORK_DIR=${FRAMEWORK_DIR:-${STORAGE_DIR}/framework}
+export CACHE_DIR=${CACHE_DIR:-${FRAMEWORK_DIR}/cache}
+export VIEWS_DIR=${VIEWS_DIR:-${FRAMEWORK_DIR}/views}
+export SESSIONS_DIR=${CACHE_DIR:-${SESSIONS_DIR}/sessions}
+
+export APP_ENV=${APP_ENV:-production}
+export APP_KEY=${APP_KEY:-base64:OQ8H9vjocvQh284ojDBrODQ2HkrgWGDvdLCaQniHz0M=}
+export APP_DEBUG=${APP_DEBUG:-false}
+export APP_URL=${APP_URL:-https://laravel-demo.dev}
+
+export DB_CONNECTION=${DB_CONNECTION:-mysql}
+export DB_HOST=${DB_HOST:-database}
+export DB_PORT=${DB_PORT:-3306}
+export DB_DATABASE=${DB_DATABASE:-laravel}
+export DB_USERNAME=${DB_USERNAME:-laravel}
+export DB_PASSWORD=${DB_PASSWORD:-laravel}
+
+export MAIL_DRIVER=${MAIL_DRIVER:-smtp}
+export MAIL_HOST=${MAIL_HOST:-mailtrap.io}
+export MAIL_PORT=${MAIL_PORT:-2525}
+export MAIL_USERNAME=${MAIL_USERNAME:-null}
+export MAIL_PASSWORD=${MAIL_PASSWORD:-null}
+export MAIL_ENCRYPTION=${MAIL_ENCRYPTION:-null}
+
+export CACHE_DRIVER=${CACHE_DRIVER:-redis}
+export SESSION_DRIVER=${SESSION_DRIVER:-redis}
+export QUEUE_DRIVER=${QUEUE_DRIVER:-database}
+
+export REDIS_HOST=${REDIS_HOST:-redis}
+export REDIS_PASSWORD=${REDIS_PASSWORD:-null}
+export REDIS_PORT=${REDIS_PORT:-6379}

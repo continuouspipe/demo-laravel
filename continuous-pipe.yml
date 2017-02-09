@@ -1,0 +1,135 @@
+environment_variables:
+    - name: CODE_REFERENCE_BRANCH_NAME
+      expression: code_reference.branch
+    - name: CODE_REFERENCE_SHA1
+      expression: code_reference.sha
+    - name: APP_ENV
+      value: "production"
+    - name: REMOTE_ENV
+      value: "1"
+
+tasks:
+    images:
+        build:
+            environment:
+                - name: APP_ENV
+                  value: ${APP_ENV}
+
+            services:
+                web:
+                    image: quay.io/richdynamix/laravel-demo
+
+    infrastructure:
+        deploy:
+            cluster: ${CLUSTER}
+            environment:
+                name: '"laravel-demo-" ~ code_reference.branch'
+
+            services:
+                database:
+                    specification:
+                        volumes:
+                            - type: persistent
+                              name: database-volume
+                              capacity: 5Gi
+                              storage_class: default
+
+                        volume_mounts:
+                            - name: database-volume
+                              mount_path: /var/lib/mysql
+
+                        command:
+                            - /usr/local/bin/docker-entrypoint.sh
+                            - mysqld
+                            - --ignore-db-dir=lost+found
+                            - --max_allowed_packet=128M
+
+                        ports:
+                            - 3306
+
+                        resources:
+                            requests:
+                                cpu: 50m
+                                memory: 250Mi
+                            limits:
+                                cpu: 500m
+                                memory: 500Mi
+
+                redis:
+                    deployment_strategy:
+                        readiness_probe:
+                            type: tcp
+                            port: 6379
+
+                    specification:
+                        ports:
+                            - 6379
+
+                        resources:
+                            requests:
+                                cpu: 50m
+                                memory: 100Mi
+                            limits:
+                                cpu: 250m
+                                memory: 250Mi
+
+    initialization:
+        run:
+            cluster: ${CLUSTER}
+            environment:
+                name: '"laravel-demo-" ~ code_reference.branch'
+
+            image:
+                from_service: web
+
+            commands:
+                - tools/docker/setup/setup.sh
+
+            environment_variables: &WEB_ENV_VARS
+                - name: APP_ENV
+                  value: ${APP_ENV}
+                - name: REMOTE_ENV
+                  value: ${REMOTE_ENV}
+                - name: APP_URL
+                  value: ${APP_URL}
+                - name: APP_USER_LOCAL
+                  value: false
+
+        filter:
+            expression: 'tasks.infrastructure.services.database.created'
+
+    application:
+        deploy:
+            cluster: ${CLUSTER}
+            environment:
+                name: '"techup-" ~ code_reference.branch'
+
+            services:
+                web:
+                    specification:
+                        accessibility:
+                            from_external: true
+
+                        environment_variables:
+                            <<: *WEB_ENV_VARS
+
+                        resources:
+                            requests:
+                                cpu: 50m
+                                memory: 500Mi
+
+                            limits:
+                                cpu: 1
+                                memory: 2G
+
+                        ports:
+                            - 80
+                            - 443
+
+                    deployment_strategy:
+                        readiness_probe:
+                            type: tcp
+                            port: 80
+                            initial_delay_seconds: 30
+                            period_seconds: 30
+                            failure_threshold: 120
