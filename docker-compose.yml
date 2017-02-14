@@ -17,13 +17,10 @@ services:
         volumes:
             - .:/app
         environment:
-          VIRTUAL_HOST: "127.0.0.1:80"
-          REDIS_PORT: 6379
           APP_USER_LOCAL: "true"
-          WEB_DIRECTORY: "/app/public"
 
     database:
-        image: mariadb:latest
+        image: quay.io/continuouspipe/mysql5.7:stable
         environment:
             MYSQL_ROOT_PASSWORD: laravel
             MYSQL_DATABASE: laravel
@@ -35,7 +32,7 @@ services:
             - "3360:3360"
 
     redis:
-        image: redis:3.0
+        image: quay.io/continuouspipe/redis3:stable
         expose:
             - 6379
         ports:

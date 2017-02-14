@@ -1,8 +1,4 @@
 environment_variables:
-    - name: CODE_REFERENCE_BRANCH_NAME
-      expression: code_reference.branch
-    - name: CODE_REFERENCE_SHA1
-      expression: code_reference.sha
     - name: APP_ENV
       value: "production"
     - name: REMOTE_ENV
@@ -17,7 +13,7 @@ tasks:
 
             services:
                 web:
-                    image: quay.io/richdynamix/laravel-demo
+                    image: quay.io/continuouspipe/laravel-demo
 
     infrastructure:
         deploy:

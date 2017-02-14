@@ -7,3 +7,6 @@
 Homestead.json
 Homestead.yaml
 .env
+.cp-remote-ignore
+.cp-remote-env-settings.yml
+cp-remote-logs/

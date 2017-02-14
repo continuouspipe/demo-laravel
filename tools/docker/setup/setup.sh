@@ -7,12 +7,6 @@ set -xe
 source /usr/local/share/bootstrap/setup.sh
 source /usr/local/share/bootstrap/common_functions.sh
 
-if [ -L "$0" ] ; then
-    DIR="$(dirname "$(readlink -f "$0")")" ;
-else
-    DIR="$(dirname "$0")" ;
-fi
-
 WORK_DIRECTORY="/app";
 
 export DB_CONNECTION=${DB_CONNECTION:-mysql}
